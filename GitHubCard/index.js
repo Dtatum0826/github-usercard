@@ -1,8 +1,25 @@
+import axios from "axios";
+
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
+const followersArray = ['Dtatum0826','tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell'];
+
+for (let i = 0; i < followersArray.length; i++){
+  getCardMaker(followersArray[i]);
+}
+function getCardMaker(username){
+axios.get(` https://api.github.com/users/${username}`)
+  .then(res =>{
+   console.log(res.data)
+    cardMaker(res.data)
+  })
+  .catch(err => {
+  console.error(err)
+  })
+}
 
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
@@ -11,6 +28,70 @@
 
     Skip to STEP 3 (line 34).
 */
+
+const entryPoint =document.querySelector('.cards')
+
+function cardMaker(obj){
+  console.log(card);
+  
+const card = document.createElement('div')
+const image = document.createElement('img')
+const cardInfo = document.createElement('div')
+const personName = document.createElement('h3')
+const userName = document.createElement('p')
+const location = document.createElement('p')
+const profile = document.createElement('p')
+const profileLink = document.createElement('a')
+const followerCount = document.createElement('p')
+const followingCount = document.createElement('p')
+const bio = document.createElement('p')
+
+ image.src = obj.avatar_url
+image.alt = "github user picture"
+personName.textContent = obj.name
+userName.textContent = obj.login
+location.textContent = `Location: ${obj.location}`
+profile.textContent = `Profile: ${obj.html_url}`
+profileLink.href = obj.html_url
+followerCount.textContent = `Followers: ${obj.followers}`
+followingCount.textContent = `Following: ${obj.following}`
+bio.textContent = obj.bio
+
+
+card.classList = "card"
+cardInfo.classList = "card-info"
+personName.classList = "name"
+userName.classList = "username"
+/*<div class="card">
+<img src={image url of user} />
+<div class="card-info">
+  <h3 class="name">{users name}</h3>
+  <p class="username">{users user name}</p>
+  <p>Location: {users location}</p>
+  <p>Profile:
+    <a href={address to users github page}>{address to users github page}</a>
+  </p>
+  <p>Followers: {users followers count}</p>
+  <p>Following: {users following count}</p>
+  <p>Bio: {users bio}</p>
+</div>
+</div>*/
+entryPoint.appendChild(card);
+card.appendChild(image);
+card.appendChild(cardInfo);
+cardInfo.appendChild(personName);
+cardInfo.appendChild(userName);
+cardInfo.appendChild(location);
+cardInfo.appendChild(profile);
+profile.appendChild(profileLink);
+cardInfo.appendChild(followerCount);
+cardInfo.appendChild(followingCount);
+cardInfo.appendChild(bio);
+
+
+return card
+
+}
 
 /*
   STEP 4: Pass the data received from Github into your function,
@@ -28,7 +109,7 @@
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
